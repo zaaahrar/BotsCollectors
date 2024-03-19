@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 
-public class DisplayOre : MonoBehaviour
+public class OreTextDisplay : MonoBehaviour
 {
     [SerializeField] private TMP_Text _OreText;
 

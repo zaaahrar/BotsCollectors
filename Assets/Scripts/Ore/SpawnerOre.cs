@@ -3,14 +3,14 @@ using System.Collections;
 
 public class SpawnerOre : MonoBehaviour
 {
+
+    private const float Offset = 7f;
+
     [SerializeField] private Ore _ore;
     [SerializeField] private float _spawnDelayTime;
     [SerializeField] private bool _canSpawned;
 
     private WaitForSeconds _spawnDelay;
-
-    private float _xOffset = 7f;
-    private float _zOffset = 7f;
 
     private void Awake() => _spawnDelay = new WaitForSeconds(_spawnDelayTime);
 
@@ -28,8 +28,8 @@ public class SpawnerOre : MonoBehaviour
 
     private Vector3 GetRandomPosition()
     {
-        float positionX = Random.Range(-_xOffset, _xOffset);
-        float positionZ = Random.Range(-_zOffset, _zOffset);
+        float positionX = Random.Range(-Offset, Offset);
+        float positionZ = Random.Range(-Offset, Offset);
 
         return new Vector3(positionX, _ore.transform.position.y, positionZ);
     }

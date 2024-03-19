@@ -1,31 +1,24 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Base : MonoBehaviour
 {
-    [SerializeField] private List<Bot> _bots;
-    [SerializeField] private List<Ore> _ores;
     [SerializeField] private Transform _parentOre;
     [SerializeField] private Transform _parentBot;
 
     private Bot[] _botsArray;
     private Ore[] _oresArray;
 
-    private void Awake()
-    {
-        _botsArray = _parentBot.GetComponentsInChildren<Bot>();
-        _bots = new List<Bot>(_botsArray);
-    }
+    private void Awake() => _botsArray = _parentBot.GetComponentsInChildren<Bot>();
 
     public void TrySendingBot()
     {
         ScanArea();
 
-        foreach(Bot bot in _bots)
+        foreach(Bot bot in _botsArray)
         {
             if (bot.IsAvailable)
             {
-                foreach(Ore ore in _ores)
+                foreach(Ore ore in _oresArray)
                 {
                     if (ore.IsFree)
                     {
@@ -37,9 +30,5 @@ public class Base : MonoBehaviour
         }
     }
 
-    private void ScanArea()
-    {
-        _oresArray = _parentOre.GetComponentsInChildren<Ore>();
-        _ores = new List<Ore>(_oresArray);
-    }
+    private void ScanArea() => _oresArray = _parentOre.GetComponentsInChildren<Ore>();
 }
