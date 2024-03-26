@@ -3,7 +3,6 @@ using System.Collections;
 
 public class SpawnerOre : MonoBehaviour
 {
-
     private const float Offset = 7f;
 
     [SerializeField] private Ore _ore;

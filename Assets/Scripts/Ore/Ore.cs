@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Ore : MonoBehaviour
 {
-    [SerializeField] private int _quantityOre = 3;
+    [SerializeField] private int _quantityOre;
     [SerializeField] private bool _isFree = true;
 
     public bool IsFree => _isFree;

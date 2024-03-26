@@ -3,28 +3,54 @@ using System.Collections;
 
 public class Bot : MonoBehaviour
 {
+    private const float MaxDistanceToObject = 1f;
+    private const float TurnForward = 0;
+    private const float TurnBack = 160;
+
     [SerializeField] private Transform _hand;
-    [SerializeField] private Transform _basePosition;
+    [SerializeField] private Transform _collectionPosition;
     [SerializeField] private CounterOre _counterOre;
     [SerializeField] private bool _isAvailable;
     [SerializeField] private float _speed;
+    [SerializeField] private Base _basePrefab;
 
+    private Transform _newBasePostion = null;
     private Vector3 _startPosition;
-    private float _turnForward = 0;
-    private float _turnBack = 160;
-    private float _maxDistanceToObject = 1.5f;
     private Ore _ore = null;
 
     public bool IsAvailable => _isAvailable;
 
     private void Awake() => _startPosition = transform.position;
 
-    public void GetTarget(Ore ore)
+    public void GetOre(Ore ore)
     {
         _isAvailable = false;
         ore.BorrowOre();
         _ore = ore;
         StartCoroutine(BringOre());
+    }
+
+    public void Initialize(CounterOre counterOre, Transform collectionPosition)
+    {
+        _counterOre = counterOre;
+        _collectionPosition = collectionPosition;
+    }
+
+    public void GetPositionNewBase(Transform newBasePosition) => _newBasePostion = newBasePosition;
+
+    public IEnumerator BuildBase(Base currentBase)
+    {
+        _isAvailable = false;
+        Vector3 finishPosition = new Vector3(_newBasePostion.position.x, transform.position.y, _newBasePostion.position.z);
+
+        yield return MoveTo(finishPosition);
+
+        _startPosition = transform.position;
+        Base newBase = Instantiate(_basePrefab, _newBasePostion.position, Quaternion.identity);
+        currentBase.RemoveFlagAction?.Invoke();
+        currentBase.RemoveBaseConstructionPriority();
+        _collectionPosition = newBase.CollectPoint;
+        _isAvailable = true;
     }
 
     private IEnumerator BringOre()
@@ -35,15 +61,15 @@ public class Bot : MonoBehaviour
 
         _ore.transform.parent = _hand;
         _ore.transform.position = _hand.position;
-        TurnAround(_turnBack);
+        TurnAround(TurnBack);
 
-        finishPosition = new Vector3(_basePosition.position.x, transform.position.y, _basePosition.position.z);
+        finishPosition = new Vector3(_collectionPosition.position.x, transform.position.y, _collectionPosition.position.z);
 
         yield return MoveTo(finishPosition);
 
         Destroy(_ore.gameObject);
         GiveOre();
-        TurnAround(_turnForward);
+        TurnAround(TurnForward);
 
         yield return MoveTo(_startPosition);
 
@@ -52,7 +78,7 @@ public class Bot : MonoBehaviour
 
     private IEnumerator MoveTo(Vector3 target)
     {
-        while (Vector3.Distance(transform.position, target) > _maxDistanceToObject)
+        while (Vector3.Distance(transform.position, target) > MaxDistanceToObject)
         {
             transform.position = Vector3.MoveTowards(transform.position, target, _speed * Time.deltaTime);
             yield return null;
