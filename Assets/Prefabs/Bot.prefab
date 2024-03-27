@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 2560578092032218118}
   - component: {fileID: 7927039526972924020}
   - component: {fileID: 4526269766802039783}
+  - component: {fileID: 7411169994927639676}
+  - component: {fileID: 4284136637752942195}
   m_Layer: 0
   m_Name: Bot
   m_TagString: Untagged
@@ -48,12 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa4947535ef5e974387f32458e401d1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hand: {fileID: 3416023336073340273}
-  _basePosition: {fileID: 0}
-  _counterOre: {fileID: 0}
   _isAvailable: 1
-  _speed: 8
-  _basePrefab: {fileID: 1745867854837750950, guid: 204e28a61bfd3d845aadac91e5e3f229, type: 3}
 --- !u!33 &2560578092032218118
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -127,6 +124,40 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7411169994927639676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2623246244868119498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc739c90c0b60744e9a2e35fe7258fde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 5
+  _collectionPosition: {fileID: 0}
+  _counterOre: {fileID: 0}
+  _base: {fileID: 0}
+  _basePrefab: {fileID: 1745867854837750950, guid: 204e28a61bfd3d845aadac91e5e3f229, type: 3}
+--- !u!114 &4284136637752942195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2623246244868119498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8287f0404029404b8bbdb454b3ffdb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 4
+  _collectionPosition: {fileID: 0}
+  _counterOre: {fileID: 0}
+  _base: {fileID: 0}
+  _hand: {fileID: 3416023336073340273}
 --- !u!1 &6748783089399416247
 GameObject:
   m_ObjectHideFlags: 0

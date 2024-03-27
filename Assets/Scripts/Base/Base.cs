@@ -10,33 +10,41 @@ public class Base : MonoBehaviour
     [SerializeField] private int _constructionCost = 5;
 
     public Action RemoveFlagAction;
+    public Action BuildBaseAction;
 
-    private bool _isBaseStationPriority = false;
+    [SerializeField] private bool _isBaseStationPriority = false;
     private Transform _newBasePosition = null;
+    private Coroutine _currentCoroutine = null;
     private Bot[] _botsArray;
     private Ore[] _oresArray;
 
     public Transform CollectPoint => _collectPoint;
+    public bool IsBaseStationPriority => _isBaseStationPriority;
+    public int ConstructionCost => _constructionCost;
 
     private void Awake() => ScanBots();
 
-    private void Update()
+    private void OnEnable() => BuildBaseAction += BuildNewBase;
+
+    private void OnDisable() => BuildBaseAction -= BuildNewBase;
+
+    public void BuildNewBase()
     {
-        if (_isBaseStationPriority && _counterOre.CountOre >= _constructionCost)
+        foreach (Bot bot in _botsArray)
         {
-            foreach(Bot bot in _botsArray)
+            if (bot.IsAvailable)
             {
-                if (bot.IsAvailable)
-                {
-                    bot.GetPositionNewBase(_newBasePosition);
-                    StartCoroutine(bot.BuildBase(this));
-                    _counterOre.SpendOre(_constructionCost);
-                    break;
-                }
+                bot.BuildBase.GetPositionNewBase(_newBasePosition);
+                _counterOre.SpendOre(_constructionCost);
+
+                if (_currentCoroutine != null)
+                    StopCoroutine(_currentCoroutine);
+
+                _currentCoroutine = StartCoroutine(bot.BuildBase.BeginBuildBase(this));
+                break;
             }
         }
-    }   
-
+    }
 
     public void TrySendingBot()
     {
@@ -47,15 +55,15 @@ public class Base : MonoBehaviour
         {
             if (bot.IsAvailable)
             {
-                foreach(Ore ore in _oresArray)
+                foreach (Ore ore in _oresArray)
                 {
                     if (ore.IsFree)
                     {
-                        bot.GetOre(ore);
+                        bot.CollectsResource.GetOre(ore);
                         break;
                     }
                 }
-            }          
+            }
         }
     }
 

@@ -15,6 +15,12 @@ public class CounterOre : MonoBehaviour
         _oreTextDisplay.UpdateOre(_countOre);
     }
 
+    public void CheckOreToBuildBase(Base currentBase)
+    {
+        if(_countOre >= currentBase.ConstructionCost)
+            currentBase.BuildBaseAction?.Invoke();
+    }
+
     public void SpendOre(int value)
     {
         _countOre -= value;
